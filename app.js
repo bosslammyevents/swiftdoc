@@ -166,6 +166,15 @@ setTimeout(() => { $('#fab').classList.add('hint'); setTimeout(() => $('#fab').c
 
 const PAGE = document.body.dataset.page;
 
+// Page-header illustrations: animate when they scroll into view
+(() => {
+  const arts = document.querySelectorAll('.ph-art');
+  if (!arts.length) return;
+  if (!('IntersectionObserver' in window)) { arts.forEach(a => a.classList.add('play')); return; }
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('play'); io.unobserve(e.target); } }), { threshold: 0.3 });
+  arts.forEach(a => io.observe(a));
+})();
+
 // Mobile menu
 const menuBtn = $('#menuBtn'), mnav = $('#mnav');
 if (menuBtn) {
@@ -178,7 +187,14 @@ if (menuBtn) {
 if (PAGE === 'home') {
   // WhatsApp bubble: show "typing…" then the message
   const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  setTimeout(() => $('#bubble').classList.add('typed'), reduce ? 0 : 3600);
+  // Document stack: play the entrance when it scrolls into view (straight away on desktop)
+  const stack = $('#stack');
+  const play = () => { stack.classList.add('play'); setTimeout(() => $('#bubble').classList.add('typed'), reduce ? 0 : 3600); };
+  if (reduce || !('IntersectionObserver' in window)) play();
+  else {
+    const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); play(); } }, { threshold: 0.35 });
+    io.observe(stack);
+  }
   const toServices = q => { if (q) store.set('sdq', q); location.href = 'services.html'; };
   $('#heroSearch').addEventListener('submit', e => { e.preventDefault(); toServices($('#heroQ').value.trim()); });
   document.querySelectorAll('.chips button').forEach(b => b.addEventListener('click', () => toServices(b.dataset.q)));
