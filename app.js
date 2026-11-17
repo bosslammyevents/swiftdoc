@@ -166,6 +166,14 @@ setTimeout(() => { $('#fab').classList.add('hint'); setTimeout(() => $('#fab').c
 
 const PAGE = document.body.dataset.page;
 
+// Mobile menu
+const menuBtn = $('#menuBtn'), mnav = $('#mnav');
+if (menuBtn) {
+  const setMenu = open => { mnav.classList.toggle('open', open); menuBtn.setAttribute('aria-expanded', open); menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu'); };
+  menuBtn.addEventListener('click', () => setMenu(!mnav.classList.contains('open')));
+  mnav.addEventListener('click', e => { if (e.target.closest('a')) setMenu(false); });
+}
+
 /* ---------- Home: hero search hands off to the services page ---------- */
 if (PAGE === 'home') {
   // WhatsApp bubble: show "typing…" then the message
