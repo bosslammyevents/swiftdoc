@@ -195,7 +195,7 @@ if (PAGE === 'home') {
     const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); play(); } }, { threshold: 0.35 });
     io.observe(stack);
   }
-  const toServices = q => { if (q) store.set('sdq', q); location.href = 'services.html'; };
+  const toServices = q => { if (q) store.set('sdq', q); location.href = '/services'; };
   $('#heroSearch').addEventListener('submit', e => { e.preventDefault(); toServices($('#heroQ').value.trim()); });
   document.querySelectorAll('.chips button').forEach(b => b.addEventListener('click', () => toServices(b.dataset.q)));
 }

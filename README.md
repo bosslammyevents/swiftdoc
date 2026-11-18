@@ -14,7 +14,7 @@ Static website (HTML + CSS + JS). No build step, no frameworks.
 | `app.js` | **WhatsApp number + services list** + page logic |
 | `logo.png`, `logo-white.png` | Logo (header / footer) |
 | `favicon.png`, `apple-touch-icon.png` | Browser tab + phone home-screen icons |
-| `netlify.toml` | Netlify settings (caching, security headers, clean URLs) |
+| `vercel.json` | Vercel settings: clean URLs (`/contact` not `/contact.html`), security headers |
 
 ## Editing
 
@@ -37,8 +37,13 @@ Static website (HTML + CSS + JS). No build step, no frameworks.
 
 ## Preview locally (VS Code)
 
-Install the **Live Server** extension → right-click `index.html` → **Open with Live Server**.
-(Opening the file by double-click also works.)
+Links use clean URLs (`/services`, `/faq`, `/contact`), so use a server that understands them:
+
+```bash
+npx serve .
+```
+
+Then open http://localhost:3000. (VS Code Live Server won't resolve `/contact` → `contact.html`.)
 
 ## Deploy (GitHub → Netlify)
 
@@ -52,4 +57,3 @@ Install the **Live Server** extension → right-click `index.html` → **Open wi
 5. Wait for DNS (up to 24h) → Netlify issues HTTPS automatically.
 
 Every `git push` after that updates the live site.
-# swiftdoc
